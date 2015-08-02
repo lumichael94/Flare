@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	//"log"
+	"log"
 	"os"
 	"os/exec"
 )
@@ -20,13 +20,12 @@ func getSparkLog() (string, error) {
 }
 
 func getSparkUILog() (string, error) {
-	text, err := readFile(sparkUILogName)
-
-	return text, err
+	//text, err := readFile(sparkUILogName)
+	text := ""
+	return text, nil
 }
 
-func initSpark() {
-
+func startSpark() {
 	//create the path for the log file
 	exec.Command("mkdir", "-p", config.Spark.Log4j.Directory)
 	sparkLogName = config.Spark.Log4j.Directory + "/sparkLogging"
@@ -59,9 +58,8 @@ func initSpark() {
 	scw.WriteString("export SPARK_MASTER_PORT=" + config.Spark.Master.Port + "\n")
 	scw.Flush()
 
-	//TODO: fix after presentation
-	//start the node as master and slave and report any errors
-	/*master := config.Spark.Directory + "/sbin/start-master.sh"
+	//TODO: fix so slave isn't started til after enabled in webui
+	master := config.Spark.Directory + "/sbin/start-master.sh"
 	slave := config.Spark.Directory + "/sbin/start-slave.sh"
 	slaveArg := "spark://" + config.Spark.Master.IP + ":" + config.Spark.Master.Port
 
@@ -79,5 +77,13 @@ func initSpark() {
 		//log.Println(string(out[:]))
 		//log.Fatal(err.Error())
 	}
-	*/
+
+}
+
+func stopSpark() {
+	master := config.Spark.Directory + "/sbin/stop-master.sh"
+	slave := config.Spark.Directory + "/sbin/stop-slave.sh"
+
+	exec.Command(master).Run()
+	exec.Command(slave).Run()
 }

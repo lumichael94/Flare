@@ -1,11 +1,13 @@
-confJSON = undefined
-fs = undefined
-exec = undefined
-filesDirectory = undefined
-localWSServer = undefined
-localIdentConn = {}
-masterWSServer = undefined
-masterIdentConn = {}
+/*Exports
+confJSON
+fs
+exec
+filesDirectory
+localWSServer
+localIdentConn
+masterWSServer
+masterIdentConn
+*/
 
 Meteor.startup(function () {
   fs = Npm.require('fs')
@@ -68,6 +70,7 @@ Meteor.startup(function () {
   return EthereumDB.find()
   })
 
+  localIdentConn = {}
   localWSServer = new WebSocketServer({
     host: confJSON.flare.local.ip,
     port: confJSON.flare.local.port
@@ -103,6 +106,7 @@ Meteor.startup(function () {
     }))
   }))
 
+  masterIdentConn = {}
   masterWSServer = new WebSocketServer({
     host: confJSON.flare.master.ip,
     port: confJSON.flare.master.port
